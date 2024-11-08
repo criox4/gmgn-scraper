@@ -1,4 +1,7 @@
 const puppeteer = require('puppeteer-extra');
+// const puppeteer = require('puppeteer-core');
+const connectionURL = 'wss://browser.zenrows.com?apikey=31c3fb765d1d651ac410e993da81b1c387855775&proxy_region=ap';
+
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const GMGN_BASE_URL = 'https://gmgn.ai/sol/token';
 
@@ -7,17 +10,20 @@ puppeteer.use(StealthPlugin());
 async function fetchTokenInfo(mintAddress) {
     console.log(`Starting token info fetch for mint address: ${mintAddress}`);
 
-    const browser = await puppeteer.launch({
-        headless: false,  
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-blink-features=AutomationControlled',
-        ]
-    });
+    // const browser = await puppeteer.launch({
+    //     headless: false,  
+    //     args: [
+    //         '--no-sandbox',
+    //         '--disable-setuid-sandbox',
+    //         '--disable-dev-shm-usage',
+    //         '--disable-blink-features=AutomationControlled',
+    //     ]
+    // });
+    const browser = await puppeteer.connect({ browserWSEndpoint: connectionURL });
+
     console.log('Browser launched successfully');
 
+    
     const page = await browser.newPage();
     console.log('New page opened in the browser');
 
@@ -26,6 +32,7 @@ async function fetchTokenInfo(mintAddress) {
 
     // Set the viewport to a common desktop resolution
     await page.setViewport({ width: 1366, height: 768 });
+    page.setDefaultNavigationTimeout(60000); // 60 seconds
 
     // Log requests and responses
     page.on('request', request => {
