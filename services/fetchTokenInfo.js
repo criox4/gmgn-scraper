@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer-extra');
 // const puppeteer = require('puppeteer-core');
-const connectionURL = 'wss://browser.zenrows.com?apikey=31c3fb765d1d651ac410e993da81b1c387855775&proxy_region=ap';
+const connectionURL= process.env.BROWSER_CONNECTION_URL;
 
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const GMGN_BASE_URL = 'https://gmgn.ai/sol/token';
@@ -19,6 +19,7 @@ async function fetchTokenInfo(mintAddress) {
     //         '--disable-blink-features=AutomationControlled',
     //     ]
     // });
+
     const browser = await puppeteer.connect({ browserWSEndpoint: connectionURL });
 
     console.log('Browser launched successfully');
