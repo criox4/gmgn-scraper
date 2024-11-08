@@ -8,7 +8,7 @@ async function fetchTokenInfo(mintAddress) {
     console.log(`Starting token info fetch for mint address: ${mintAddress}`);
 
     const browser = await puppeteer.launch({
-        headless: true,  
+        headless: false,  
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
